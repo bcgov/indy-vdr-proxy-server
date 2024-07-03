@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{include "indy-vdr-proxy-server.fullname" .}}
+  labels: 
+    app.kubernetes.io/component: server
+    {{- include "indy-vdr-proxy-server.labels" . | nindent 4}}
+spec:
+  ports:
+    - port: {{.Values.service.targetPort}}
+      targetPort: {{.Values.service.targetPort}}
+      protocol: TCP
+      name: http
+  selector: {{- include "indy-vdr-proxy-server.selectorLabels" . | nindent 4}}

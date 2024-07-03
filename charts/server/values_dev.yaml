@@ -1,0 +1,45 @@
+# Default values for indy-vdr-proxy-server dev deployment
+
+replicaCount: 1
+
+autoscaling:
+  enabled: false
+
+podAnnotations: {}
+podLabels: {}
+
+image:
+  pullPolicy: Always
+  registry: artifacts.developer.gov.bc.ca/github-docker-remote
+  # registry: ghcr.io
+  repository: bcgov/indy-vdr-proxy-server/server
+  # Overrides the image tag whose default is the chart appVersion.
+  # tag: "68a3892"
+
+env:
+  PORT: "3000"
+  THROTTLE_TTL: "60000"
+  THROTTLE_LIMIT: "2000"
+  LOG_LEVEL: "3"
+
+resources:
+  requests:
+    memory: 92Mi
+    cpu: 10m
+  limits:
+    memory: 128Mi
+    cpu: 100m
+
+service:
+  targetPort: 3000
+
+route:
+  host: ""
+  annotations:
+    haproxy.router.openshift.io/timeout: 60s
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []

@@ -1,0 +1,56 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{include "indy-vdr-proxy-server.fullname" .}}
+  labels: {{- include "indy-vdr-proxy-server.labels" . | nindent 4}}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}  
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+      {{- include "indy-vdr-proxy-server.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        app.kubernetes.io/component: server
+        {{- include "indy-vdr-proxy-server.labels" . | nindent 8 }}
+	      {{- with .Values.podLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.env.PORT }}
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            timeoutSeconds: 3
+          env:
+            - name: PORT
+              value: {{.Values.env.PORT | quote}}
+            - name: THROTTLE_TTL
+              value: {{.Values.env.THROTTLE_TTL | quote}}
+            - name: THROTTLE_LIMIT
+              value: {{.Values.env.THROTTLE_LIMIT | quote}}
+            - name: LOG_LEVEL
+              value:  {{.Values.env.LOG_LEVEL | quote}}
