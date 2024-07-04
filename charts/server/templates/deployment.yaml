@@ -2,8 +2,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{include "indy-vdr-proxy-server.fullname" .}}
-  labels: {{- include "indy-vdr-proxy-server.labels" . | nindent 4}}
+  name: {{include "vdr-proxy.fullname" .}}
+  labels: {{- include "vdr-proxy.labels" . | nindent 4}}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -11,7 +11,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: server
-      {{- include "indy-vdr-proxy-server.selectorLabels" . | nindent 6 }}
+      {{- include "vdr-proxy.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -20,11 +20,13 @@ spec:
       {{- end }}
       labels:
         app.kubernetes.io/component: server
-        {{- include "indy-vdr-proxy-server.labels" . | nindent 8 }}
+        {{- include "vdr-proxy.labels" . | nindent 8 }}
 	      {{- with .Values.podLabels }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -53,4 +55,4 @@ spec:
             - name: THROTTLE_LIMIT
               value: {{.Values.env.THROTTLE_LIMIT | quote}}
             - name: LOG_LEVEL
-              value:  {{.Values.env.LOG_LEVEL | quote}}
+              value: {{.Values.env.LOG_LEVEL | quote}}

@@ -1,0 +1,89 @@
+name: Quality and Build 
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, labeled]
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    name: Linting
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7.1'
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          node -v && yarn -v && yarn install --immutable && \
+          git status
+
+      - name: Prettier
+        run: |
+          yarn format:check
+
+      - name: Linting
+        run: |
+          yarn lint:check
+
+  test:
+    runs-on: ubuntu-22.04
+    name: Testing
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.7.1'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          node -v && yarn -v && yarn install --immutable && \
+          git status
+      
+      - name: NestJS build
+        run: |
+          yarn build
+
+      - name: Unit testing
+        run: |
+          yarn test
+
+      - name: End-to-end testing
+        run: |
+          yarn test:e2e
+
+  build:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [lint, test]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        uses: ./.github/actions/docker-build
+        with:
+          registry: ${{ env.REGISTRY }}
+          image_name: "${{ github.repository }}/server"
+          context: ./
+          dockerfile: "Dockerfile"
+          docker_user: ${{ github.actor }}
+          docker_password: ${{ secrets.GITHUB_TOKEN }}
+    

@@ -1,4 +1,4 @@
-# Default values for indy-vdr-proxy-server prod deployment
+# Default values for vdr-proxy prod deployment
 
 replicaCount: 3
 
@@ -17,7 +17,7 @@ image:
   # registry: ghcr.io
   repository: bcgov/indy-vdr-proxy-server/server
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: "68a3892"
+  tag: "latest"
 
 env:
   PORT: "3000"
@@ -32,6 +32,9 @@ resources:
   limits:
     memory: 128Mi
     cpu: 100m
+
+imagePullSecrets:
+  - name: artifactory-regcred
 
 service:
   targetPort: 3000

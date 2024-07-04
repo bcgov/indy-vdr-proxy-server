@@ -3,14 +3,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{include "indy-vdr-proxy-server.fullname" .}}-hpa
-  labels: {{- include "indy-vdr-proxy-server.labels" . | nindent 4}}
+  name: {{include "vdr-proxy.fullname" .}}-hpa
+  labels: {{- include "vdr-proxy.labels" . | nindent 4}}
   annotations: {{- toYaml .Values.route.annotations | nindent 4}}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{include "indy-vdr-proxy-server.fullname" .}}
+    name: {{include "vdr-proxy.fullname" .}}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
