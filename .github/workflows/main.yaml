@@ -9,7 +9,7 @@ on:
 
 jobs:
   lint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     name: Linting
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
           yarn lint:check
 
   test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     name: Testing
     steps:
       - uses: actions/checkout@v4
@@ -70,7 +70,7 @@ jobs:
   build:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [lint, test]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     permissions:
       contents: read
       packages: write
