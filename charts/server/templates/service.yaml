@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{include "vdr-proxy.fullname" .}}
+  labels: 
+    app.kubernetes.io/component: server
+    {{- include "vdr-proxy.labels" . | nindent 4}}
+spec:
+  ports:
+    - port: {{.Values.service.targetPort}}
+      targetPort: {{.Values.service.targetPort}}
+      name: http
+  selector: {{- include "vdr-proxy.selectorLabels" . | nindent 4}}
