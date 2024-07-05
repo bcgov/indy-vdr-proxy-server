@@ -1,11 +1,14 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: server-allow-all
+  name: {{include "vdr-proxy.fullname" .}}-ingress
+  labels: {{- include "vdr-proxy.labels" . | nindent 4}}
+  annotations: {{- toYaml .Values.route.annotations | nindent 4}}
   namespace: {{.Values.namespace}}
 spec:
   podSelector:
-    matchLabels:
-      app: server
+    matchLabels: {{- include "vdr-proxy.selectorLabels" . | nindent 6}}
   ingress:
-  - {}
+    - {}
+  policyTypes:
+    - Ingress
