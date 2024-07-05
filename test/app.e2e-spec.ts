@@ -19,6 +19,10 @@ describe('AppModule (e2e)', () => {
     await app.close()
   })
 
+  it('/ (GET)', () => {
+    return request(app.getHttpServer()).get('/').expect(200).expect('Proxy is available')
+  })
+
   it('/health (GET)', () => {
     return request(app.getHttpServer()).get('/health').expect(204).expect({})
   })

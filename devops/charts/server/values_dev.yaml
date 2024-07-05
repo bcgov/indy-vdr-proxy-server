@@ -1,23 +1,21 @@
-# Default values for vdr-proxy test deployment
+# Default values for vdr-proxy dev deployment
+namespace: c2a2c4-dev
 
-replicaCount: 2
+replicaCount: 1
 
 autoscaling:
-  enabled: true
-  minReplicas: 2
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 80
+  enabled: false
 
 podAnnotations: {}
 podLabels: {}
 
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   registry: artifacts.developer.gov.bc.ca/github-docker-remote
   # registry: ghcr.io
   repository: bcgov/indy-vdr-proxy-server/server
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "ef23c2d"
 
 env:
   PORT: "3000"
@@ -44,8 +42,8 @@ route:
   annotations:
     haproxy.router.openshift.io/timeout: 60s
 
-# Additional volumes on the output Deployment definition
+# Additional volumes on the output Deployment definition.
 volumes: []
 
-# Additional volumeMounts on the output Deployment definition
+# Additional volumeMounts on the output Deployment definition.
 volumeMounts: []

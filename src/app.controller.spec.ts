@@ -14,7 +14,13 @@ describe('AppController', () => {
     appController = app.get<AppController>(AppController)
   })
 
-  describe('root', () => {
+  describe('/', () => {
+    it('should return respond to a root GET with "Proxy is available"', () => {
+      expect(appController.getRoot()).toBe('Proxy is available')
+    })
+  })
+
+  describe('/health', () => {
     it('should return respond to a GET health check without returning anything', () => {
       expect(appController.getHealth()).toBe(void 0)
     })
