@@ -5,6 +5,12 @@ import { AppService } from './app.service'
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('/')
+  @HttpCode(200)
+  getRoot(): string {
+    return this.appService.getRoot()
+  }
+
   @Get('/health')
   @HttpCode(204)
   getHealth(): void {
