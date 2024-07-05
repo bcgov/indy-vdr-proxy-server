@@ -28,10 +28,10 @@ env:
 
 resources:
   requests:
-    memory: 184Mi
+    memory: 192Mi
     cpu: 10m
   limits:
-    memory: 256Mi
+    memory: 192Mi
     cpu: 100m
 
 imagePullSecrets:
