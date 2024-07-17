@@ -24,7 +24,7 @@ env:
   PORT: "3000"
   THROTTLE_TTL: "60000"
   THROTTLE_LIMIT: "2000"
-  LOG_LEVEL: "3"
+  LOG_LEVEL: "2"
 
 resources:
   requests:
