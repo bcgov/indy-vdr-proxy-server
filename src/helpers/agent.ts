@@ -1,16 +1,40 @@
-import { Agent, ConsoleLogger, DidsModule, Logger, LogLevel } from '@credo-ts/core'
-import { agentDependencies } from '@credo-ts/node'
-import { AskarModule } from '@credo-ts/askar'
 import { AnonCredsModule } from '@credo-ts/anoncreds'
+import { AskarModule } from '@credo-ts/askar'
+import {
+  Agent,
+  AgentDependencies,
+  ConsoleLogger,
+  DidsModule,
+  Logger,
+  LogLevel,
+} from '@credo-ts/core'
 import {
   IndyVdrAnonCredsRegistry,
   IndyVdrModule,
   IndyVdrPoolConfig,
   IndyVdrSovDidResolver,
 } from '@credo-ts/indy-vdr'
+import { NodeFileSystem } from '@credo-ts/node/build/NodeFileSystem'
 import { anoncreds } from '@hyperledger/anoncreds-nodejs'
 import { ariesAskar } from '@hyperledger/aries-askar-nodejs'
 import { indyVdr } from '@hyperledger/indy-vdr-nodejs'
+import { EventEmitter } from 'events'
+import { WebSocket } from 'ws'
+
+class CustomFileSystem extends NodeFileSystem {
+  public constructor() {
+    super({
+      baseDataPath: process.cwd(),
+    })
+  }
+}
+
+const agentDependencies: AgentDependencies = {
+  FileSystem: CustomFileSystem,
+  fetch,
+  EventEmitterClass: EventEmitter,
+  WebSocketClass: WebSocket,
+}
 
 export type IndyVdrProxyAgent = Agent<ReturnType<typeof getIndyVdrProxyAgentModules>>
 
