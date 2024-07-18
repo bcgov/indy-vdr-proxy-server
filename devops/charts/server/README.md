@@ -3,5 +3,5 @@ helm install vdr-proxy ./devops/charts/server -f ./devops/charts/server/values_d
 ```
 
 ```console
-helm template vdr-proxy ./devops/charts/server -f ./devops/charts/server values_dev.yaml | oc apply -n c2a2c4-dev -f -
+helm template vdr-proxy ./devops/charts/server -f ./devops/charts/server/values_dev.yaml | oc apply -n c2a2c4-dev -f -
 ```
