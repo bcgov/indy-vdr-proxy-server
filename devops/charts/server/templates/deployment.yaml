@@ -55,7 +55,7 @@ spec:
             periodSeconds: 10
           volumeMounts:
             - name: cache-volume
-              mountPath: /app/cache
+              mountPath: /app/credo
           env:
             - name: PORT
               value: {{.Values.env.PORT | quote}}
