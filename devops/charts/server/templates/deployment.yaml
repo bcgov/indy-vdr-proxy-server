@@ -25,10 +25,6 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      volumes:
-        - name: cache-volume
-          emptyDir:
-            sizeLimit: {{ .Values.cacheVolumeSize }}
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       containers:
@@ -53,9 +49,6 @@ spec:
             initialDelaySeconds: 20
             timeoutSeconds: 5
             periodSeconds: 10
-          volumeMounts:
-            - name: cache-volume
-              mountPath: /app/credo
           env:
             - name: PORT
               value: {{.Values.env.PORT | quote}}

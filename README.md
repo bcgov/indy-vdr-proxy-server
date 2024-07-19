@@ -13,25 +13,35 @@ $ yarn install
 ## Running the app
 
 ```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
+$ docker build --tag 'proxy' .
 ```
+
+```bash
+$ docker run -p 3000:3000 'proxy'
+```
+
+Optionally, you can pass `--user 1014420000` to the above command to simulate an OpenShift environnment.
+
+If you don't want to see the logs, add `--detach` as well.
+
+**Note:** To run locally *without* using Docker, temporarily prefix the base filesystem paths in `src/helpers/agent.ts` with `process.cwd()`
 
 ## Test
 
 ```bash
 # unit tests
-$ yarn run test
+$ yarn test
 
 # e2e tests
-$ yarn run test:e2e
+$ yarn test:e2e
+```
 
-# test coverage
-$ yarn run test:cov
+## Eslint and Prettier
+
+```bash
+# eslint
+$ yarn lint
+
+# prettier
+$ yarn format
 ```
