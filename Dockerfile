@@ -5,8 +5,10 @@ FROM node:18-buster AS base
 ENV YARN_VERSION=4.3.1
 
 # Update dependencies, add python to the base image, install and use yarn 4.x
-RUN apt-get update && apt-get install python3=3.7.3-1 && \
-  corepack enable && corepack prepare yarn@${YARN_VERSION}
+RUN apt-get update && \
+  apt-get install python3=3.7.3-1 && \
+  corepack enable && \
+  corepack prepare yarn@${YARN_VERSION}
 
 # Create app directory
 WORKDIR /app
@@ -18,13 +20,17 @@ COPY . .
 FROM base AS builder
 
 # Fix for node-gyp issues (Yarn 4 doesn't do global installs), install deps and remove created cache, run build
-RUN npm install -g node-gyp && yarn install --immutable && yarn cache clean && yarn build
+RUN npm install -g node-gyp && \
+  yarn install --immutable && \
+  yarn cache clean && \
+  yarn build
 
 # Run server
 FROM builder AS runner
 
 # Create a volume for the Credo agent data, allow read write access
-RUN mkdir /credo && chmod -R 776 /credo
+RUN mkdir /credo && \
+  chmod -R 776 /credo
 
 # Expose port
 EXPOSE 3000
