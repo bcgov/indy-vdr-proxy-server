@@ -24,9 +24,9 @@ import { WebSocket } from 'ws'
 class CustomFileSystem extends NodeFileSystem {
   public constructor() {
     super({
-      baseDataPath: `${process.cwd()}/credo/data`,
-      baseCachePath: `${process.cwd()}/credo/cache`,
-      baseTempPath: `${process.cwd()}/credo/tmp`,
+      baseDataPath: `/credo/data`,
+      baseCachePath: `/credo/cache`,
+      baseTempPath: `/credo/tmp`,
     })
   }
 }
