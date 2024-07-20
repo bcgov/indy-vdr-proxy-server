@@ -30,7 +30,7 @@ FROM builder AS runner
 
 # Create a volume for the Credo agent data, allow read write access
 RUN mkdir /var/credo && \
-  chmod -R 2777 /var/credo
+  chmod 777 /var/credo
 
 # Expose port
 EXPOSE 3000
