@@ -12,6 +12,8 @@ autoscaling:
 podAnnotations: {}
 podLabels: {}
 
+cacheVolumeSize: "1Gi"
+
 image:
   pullPolicy: IfNotPresent
   registry: artifacts.developer.gov.bc.ca/github-docker-remote
