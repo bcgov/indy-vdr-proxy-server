@@ -1,0 +1,35 @@
+diff --git a/build/store/Store.js b/build/store/Store.js
+index f03f283e4010f410b55780ddfb33988d97c5f5a3..349e9c3d1653e91d0a9b082679892ffc7573b3ec 100644
+--- a/build/store/Store.js
++++ b/build/store/Store.js
+@@ -37,14 +37,22 @@ class Store {
+         return await ariesAskar_1.ariesAskar.storeRekey({ keyMethod: keyMethod === null || keyMethod === void 0 ? void 0 : keyMethod.toUri(), passKey, storeHandle: this.handle });
+     }
+     static async provision({ uri, recreate, keyMethod, passKey, profile, }) {
+-        const handle = await ariesAskar_1.ariesAskar.storeProvision({
+-            specUri: uri,
+-            keyMethod: keyMethod === null || keyMethod === void 0 ? void 0 : keyMethod.toUri(),
+-            profile,
+-            passKey,
+-            recreate,
+-        });
+-        return new Store({ handle, uri });
++        console.log('aries-askar-shared: Store.provision, uri, recreate, keyMethod, passKey, profile', uri, recreate, keyMethod, passKey, profile);
++        try {
++            const handle = await ariesAskar_1.ariesAskar.storeProvision({
++                specUri: uri,
++                keyMethod: keyMethod === null || keyMethod === void 0 ? void 0 : keyMethod.toUri(),
++                profile,
++                passKey,
++                recreate,
++            });
++            console.log('aries-askar-returning new store')
++            return new Store({ handle, uri });
++        } catch (e) {
++            console.log('aries-askar-shared: Store.provision error', e);
++            console.log('aries-askar-shared: Store.provision error.message', e?.message);
++            throw e
++        }
+     }
+     static async open({ uri, keyMethod, passKey, profile, }) {
+         const handle = await ariesAskar_1.ariesAskar.storeOpen({ profile, passKey, keyMethod: keyMethod === null || keyMethod === void 0 ? void 0 : keyMethod.toUri(), specUri: uri });
