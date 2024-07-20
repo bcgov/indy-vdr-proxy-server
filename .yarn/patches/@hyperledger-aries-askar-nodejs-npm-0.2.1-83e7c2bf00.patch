@@ -1,0 +1,63 @@
+diff --git a/build/NodeJSAriesAskar.js b/build/NodeJSAriesAskar.js
+index faaac040b2dfe79da29ae82eb7cb3f791f2dde27..76cd1e2595d62074d0233b55e8d57d39cd1426ba 100644
+--- a/build/NodeJSAriesAskar.js
++++ b/build/NodeJSAriesAskar.js
+@@ -575,8 +575,11 @@ class NodeJSAriesAskar {
+         return aries_askar_shared_1.StoreHandle.fromHandle(handle);
+     }
+     async storeProvision(options) {
++        console.log('aries-askar-nodejs, options', options);
+         const { profile, passKey, keyMethod, specUri, recreate } = (0, ffi_1.serializeArguments)(options);
++        console.log('aries-askar-nodejs, serialized', profile, passKey, keyMethod, specUri, recreate);
+         const handle = await this.promisifyWithResponse((cb, cbId) => this.nativeAriesAskar.askar_store_provision(specUri, keyMethod, passKey, profile, recreate, cb, cbId), ffi_1.FFI_STORE_HANDLE);
++        console.log('aries-askar-nodejs, handle', handle);
+         return aries_askar_shared_1.StoreHandle.fromHandle(handle);
+     }
+     async storeRekey(options) {
+diff --git a/build/library/register.js b/build/library/register.js
+index a96a55c291880f4750b4318431425441fe4eea8a..6a00fdc29d3bbad4db3fcfd22c3b483ab903f289 100644
+--- a/build/library/register.js
++++ b/build/library/register.js
+@@ -26,27 +26,39 @@ const doesPathExist = fs_1.default.existsSync;
+ const getLibrary = () => {
+     // Detect OS; darwin, linux and windows are only supported
+     const platform = os_1.default.platform();
+-    if (platform !== 'linux' && platform !== 'win32' && platform !== 'darwin')
++    if (platform !== 'linux' && platform !== 'win32' && platform !== 'darwin') { 
++        console.log('Unsupported platform: ', platform);
+         throw new Error(`Unsupported platform: ${platform}. linux, win32 and darwin are supported.`);
++    }
+     // Get a potential path from the environment variable
+     const pathFromEnvironment = process.env[ENV_VAR];
++    console.log('pathFromEnvironment: ', pathFromEnvironment);
+     // Get the paths specific to the users operating system
+     const platformPaths = libPaths[platform];
++    console.log('platformPaths: ', platformPaths);
+     // Look for the file in the native directory of the package.
+     // node-pre-gyp will download the binaries to this directory after installing the package
+     platformPaths.unshift(path_1.default.join(__dirname, '../../native'));
++    console.log('platformPaths after unshift: ', platformPaths);
+     // Check if the path from the environment variable is supplied and add it
+     // We use unshift here so that when we want to get a valid library path this will be the first to resolve
+-    if (pathFromEnvironment)
++    if (pathFromEnvironment) {
++        console.log('pathFromEnvironment is truthy');
+         platformPaths.unshift(pathFromEnvironment);
++        console.log('platformPaths after pathFromEnvironment unshift: ', platformPaths);
++    }
+     // Create the path + file
+     const libaries = platformPaths.map((p) => { var _a; return path_1.default.join(p, `${(_a = extensions[platform].prefix) !== null && _a !== void 0 ? _a : ''}${LIBNAME}${extensions[platform].extension}`); });
++    console.log('libaries: ', libaries);
+     // Gaurd so we quit if there is no valid path for the library
+-    if (!libaries.some(doesPathExist))
++    if (!libaries.some(doesPathExist)) {
++        console.log('!libraries.some(doesPathExist)');
+         throw new Error(`Could not find ${LIBNAME} with these paths: ${libaries.join(' ')}`);
++    }
+     // Get the first valid library
+     // Casting here as a string because there is a guard of none of the paths
+     const validLibraryPath = libaries.find((l) => doesPathExist(l));
++    console.log('validLibraryPath: ', validLibraryPath);
+     // TODO fix the typing conversion
+     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+     // @ts-ignore

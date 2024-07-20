@@ -987,35 +987,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperledger/aries-askar-nodejs@npm:^0.2.1":
-  version: 0.2.3
-  resolution: "@hyperledger/aries-askar-nodejs@npm:0.2.3"
-  dependencies:
-    "@2060.io/ffi-napi": "npm:^4.0.9"
-    "@2060.io/ref-napi": "npm:^3.0.6"
-    "@hyperledger/aries-askar-shared": "npm:0.2.3"
-    "@mapbox/node-pre-gyp": "npm:^1.0.11"
-    ref-array-di: "npm:^1.2.2"
-    ref-struct-di: "npm:^1.1.1"
-  checksum: 10c0/80f6f79e61a02712cd910d3e8a2c74eba754445db4f17d882b03288fbcec7d01cd22dfaad2846ca4df3259be757c0feae19c6f9dae023bd8a466c2f5bf9e37a9
-  languageName: node
-  linkType: hard
-
 "@hyperledger/aries-askar-shared@npm:0.2.1":
   version: 0.2.1
   resolution: "@hyperledger/aries-askar-shared@npm:0.2.1"
   dependencies:
     buffer: "npm:^6.0.3"
   checksum: 10c0/41c4e03457a0147d986804646f45a3b00bdd19cd64f1eb575cb14c940162225ecb4762704c2dcb2bde779f974025e6e4c68d7cb4620e81bf3b6c31abef6ba04c
-  languageName: node
-  linkType: hard
-
-"@hyperledger/aries-askar-shared@npm:0.2.3":
-  version: 0.2.3
-  resolution: "@hyperledger/aries-askar-shared@npm:0.2.3"
-  dependencies:
-    buffer: "npm:^6.0.3"
-  checksum: 10c0/91003971591771972939a7415358163991351126085c2c29cfb2f5537fa8578dfd360ce9b92c19558829a3dade95c23c0af68e2560aba2157e440f7b234724ed
   languageName: node
   linkType: hard
 
@@ -5614,8 +5591,8 @@ __metadata:
     "@credo-ts/node": "npm:0.5.3"
     "@hyperledger/anoncreds-nodejs": "npm:0.2.2"
     "@hyperledger/anoncreds-shared": "npm:0.2.2"
-    "@hyperledger/aries-askar-nodejs": "npm:0.2.1"
-    "@hyperledger/aries-askar-shared": "npm:0.2.1"
+    "@hyperledger/aries-askar-nodejs": "patch:@hyperledger/aries-askar-nodejs@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-nodejs-npm-0.2.1-83e7c2bf00.patch"
+    "@hyperledger/aries-askar-shared": "patch:@hyperledger/aries-askar-shared@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-shared-npm-0.2.1-a828004054.patch"
     "@hyperledger/indy-vdr-nodejs": "npm:0.2.2"
     "@hyperledger/indy-vdr-shared": "npm:0.2.2"
     "@nestjs/cli": "npm:^10.0.0"
