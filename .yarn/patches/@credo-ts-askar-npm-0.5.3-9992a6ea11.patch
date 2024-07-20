@@ -1,0 +1,113 @@
+diff --git a/build/utils/askarWalletConfig.js b/build/utils/askarWalletConfig.js
+index 045773aa8100917aa1f794de59e3813e296a3c45..87e08f5a7288f4a0604321cf4e9db6ec844c588f 100644
+--- a/build/utils/askarWalletConfig.js
++++ b/build/utils/askarWalletConfig.js
+@@ -24,21 +24,29 @@ const uriFromWalletConfig = (walletConfig, credoDataPath) => {
+     let uri = '';
+     let path;
+     // By default use sqlite as database backend
++    console.log('uriFromWalletConfig walletConfig', walletConfig);
+     if (!walletConfig.storage) {
++        console.log('using sqlite as default');
+         walletConfig.storage = { type: 'sqlite' };
+     }
+     const urlParams = [];
+     const storageConfig = walletConfig.storage;
++    console.log('storageConfig', storageConfig)
+     if ((0, AskarWalletStorageConfig_1.isAskarWalletSqliteStorageConfig)(storageConfig)) {
+         if ((_a = storageConfig.config) === null || _a === void 0 ? void 0 : _a.inMemory) {
++            console.log('using inMemory');
+             uri = 'sqlite://:memory:';
+         }
+         else {
++            console.log('using path');
+             path = (_c = (_b = storageConfig.config) === null || _b === void 0 ? void 0 : _b.path) !== null && _c !== void 0 ? _c : `${credoDataPath}/wallet/${walletConfig.id}/sqlite.db`;
++            console.log('path:', path);
+             uri = `sqlite://${path}`;
++            console.log('uri:', uri);
+         }
+     }
+     else if ((0, AskarWalletStorageConfig_1.isAskarWalletPostgresStorageConfig)(storageConfig)) {
++        console.log('using postgres???????');
+         if (!storageConfig.config || !storageConfig.credentials) {
+             throw new core_1.WalletError('Invalid storage configuration for postgres wallet');
+         }
+@@ -57,6 +65,7 @@ const uriFromWalletConfig = (walletConfig, credoDataPath) => {
+         uri = `postgres://${encodeURIComponent(storageConfig.credentials.account)}:${encodeURIComponent(storageConfig.credentials.password)}@${storageConfig.config.host}/${encodeURIComponent(walletConfig.id)}`;
+     }
+     else {
++        console.log('storage type not supported');
+         throw new core_1.WalletError(`Storage type not supported: ${storageConfig.type}`);
+     }
+     // Common config options
+@@ -67,8 +76,10 @@ const uriFromWalletConfig = (walletConfig, credoDataPath) => {
+         urlParams.push(`min_connections=${encodeURIComponent(storageConfig.config.minConnections)}`);
+     }
+     if (urlParams.length > 0) {
++        console.log('urlParams:', urlParams);
+         uri = `${uri}?${urlParams.join('&')}`;
+     }
++    console.log('final uri:', uri);
+     return { uri, path };
+ };
+ exports.uriFromWalletConfig = uriFromWalletConfig;
+diff --git a/build/wallet/AskarWallet.js b/build/wallet/AskarWallet.js
+index 4172e9577dc09f0a51886171d44934a0315ded37..82bf81f575260cbf680703b1ef908b2bc3f2c0af 100644
+--- a/build/wallet/AskarWallet.js
++++ b/build/wallet/AskarWallet.js
+@@ -66,11 +66,16 @@ let AskarWallet = class AskarWallet extends AskarBaseWallet_1.AskarBaseWallet {
+      * @throws {WalletError} if another error occurs
+      */
+     async createAndOpen(walletConfig) {
+-        this.logger.debug(`Creating wallet '${walletConfig.id}`);
++        this.logger.debug(`Creating wallet '${walletConfig.id}'`);
++        console.log('walletConfig', walletConfig);
++        console.log('JSON.stringify(walletConfig)', JSON.stringify(walletConfig));
+         const askarWalletConfig = await this.getAskarWalletConfig(walletConfig);
+         // Check if database exists
+         const { path: filePath } = (0, utils_1.uriFromWalletConfig)(walletConfig, this.fileSystem.dataPath);
++        console.log('filePath:', filePath);
++        console.log('await this.fileSystem.exists(filePath):', await this.fileSystem.exists(filePath));
+         if (filePath && (await this.fileSystem.exists(filePath))) {
++            console.log('DUPLICATE')
+             throw new core_1.WalletDuplicateError(`Wallet '${walletConfig.id}' already exists.`, {
+                 walletType: 'AskarWallet',
+             });
+@@ -78,8 +83,12 @@ let AskarWallet = class AskarWallet extends AskarBaseWallet_1.AskarBaseWallet {
+         try {
+             // Make sure path exists before creating the wallet
+             if (filePath) {
++                console.log('creating dir:')
+                 await this.fileSystem.createDirectory(filePath);
++                console.log('successfully created dir:')
+             }
++            console.log('askarWalletConfig:', askarWalletConfig);
++            console.log('JSON.stringify(askarWalletConfig):', JSON.stringify(askarWalletConfig));
+             this._store = await aries_askar_shared_1.Store.provision({
+                 recreate: false,
+                 uri: askarWalletConfig.uri,
+@@ -92,10 +101,13 @@ let AskarWallet = class AskarWallet extends AskarBaseWallet_1.AskarBaseWallet {
+             this.walletConfig = walletConfig;
+         }
+         catch (error) {
++            console.log('ERROR:', error)
++            console.log('error.message:', error?.message)
+             // FIXME: Askar should throw a Duplicate error code, but is currently returning Encryption
+             // And if we provide the very same wallet key, it will open it without any error
+             if ((0, utils_1.isAskarError)(error) &&
+                 (error.code === utils_1.AskarErrorCode.Encryption || error.code === utils_1.AskarErrorCode.Duplicate)) {
++                console.log('DUPLICATE OR ENCRYPTION')
+                 const errorMessage = `Wallet '${walletConfig.id}' already exists`;
+                 this.logger.debug(errorMessage);
+                 throw new core_1.WalletDuplicateError(errorMessage, {
+@@ -322,6 +334,10 @@ let AskarWallet = class AskarWallet extends AskarBaseWallet_1.AskarBaseWallet {
+     async getAskarWalletConfig(walletConfig) {
+         var _a;
+         const { uri, path } = (0, utils_1.uriFromWalletConfig)(walletConfig, this.fileSystem.dataPath);
++        console.log('uri:', uri);
++        console.log('path:', path);
++        console.log('profile:', walletConfig.id);
++        console.log('passKey:', walletConfig.key);
+         return {
+             uri,
+             path,
