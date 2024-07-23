@@ -9,8 +9,6 @@ autoscaling:
 podAnnotations: {}
 podLabels: {}
 
-cacheVolumeSize: "1Gi"
-
 image:
   pullPolicy: Always
   registry: artifacts.developer.gov.bc.ca/github-docker-remote
@@ -27,11 +25,11 @@ env:
 
 resources:
   requests:
-    memory: 192Mi
-    cpu: 10m
-  limits:
-    memory: 192Mi
+    memory: 0.5Gi
     cpu: 100m
+  limits:
+    memory: 0.5Gi
+    cpu: 300m
 
 imagePullSecrets:
   - name: artifactory-regcred
