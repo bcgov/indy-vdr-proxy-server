@@ -23,14 +23,14 @@
   },
   "dependencies": {
     "@credo-ts/anoncreds": "0.5.3",
-    "@credo-ts/askar": "patch:@credo-ts/askar@npm%3A0.5.3#~/.yarn/patches/@credo-ts-askar-npm-0.5.3-9992a6ea11.patch",
+    "@credo-ts/askar": "0.5.3",
     "@credo-ts/core": "0.5.3",
     "@credo-ts/indy-vdr": "0.5.3",
     "@credo-ts/node": "0.5.3",
     "@hyperledger/anoncreds-nodejs": "0.2.2",
     "@hyperledger/anoncreds-shared": "0.2.2",
-    "@hyperledger/aries-askar-nodejs": "patch:@hyperledger/aries-askar-nodejs@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-nodejs-npm-0.2.1-83e7c2bf00.patch",
-    "@hyperledger/aries-askar-shared": "patch:@hyperledger/aries-askar-shared@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-shared-npm-0.2.1-a828004054.patch",
+    "@hyperledger/aries-askar-nodejs": "0.2.1",
+    "@hyperledger/aries-askar-shared": "0.2.1",
     "@hyperledger/indy-vdr-nodejs": "0.2.2",
     "@hyperledger/indy-vdr-shared": "0.2.2",
     "@nestjs/common": "^10.3.9",
@@ -84,10 +84,7 @@
   },
   "packageManager": "yarn@4.3.1",
   "resolutions": {
-    "@credo-ts/askar@npm:0.5.3": "patch:@credo-ts/askar@npm%3A0.5.3#~/.yarn/patches/@credo-ts-askar-npm-0.5.3-9992a6ea11.patch",
     "@hyperledger/aries-askar-nodejs": "0.2.1",
-    "@hyperledger/aries-askar-shared": "0.2.1",
-    "@hyperledger/aries-askar-shared@npm:0.2.1": "patch:@hyperledger/aries-askar-shared@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-shared-npm-0.2.1-a828004054.patch",
-    "@hyperledger/aries-askar-nodejs@npm:^0.2.1": "patch:@hyperledger/aries-askar-nodejs@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-nodejs-npm-0.2.1-83e7c2bf00.patch"
+    "@hyperledger/aries-askar-shared": "0.2.1"
   }
 }

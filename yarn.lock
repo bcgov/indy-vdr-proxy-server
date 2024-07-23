@@ -573,22 +573,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@credo-ts/askar@patch:@credo-ts/askar@npm%3A0.5.3#~/.yarn/patches/@credo-ts-askar-npm-0.5.3-9992a6ea11.patch":
-  version: 0.5.3
-  resolution: "@credo-ts/askar@patch:@credo-ts/askar@npm%3A0.5.3#~/.yarn/patches/@credo-ts-askar-npm-0.5.3-9992a6ea11.patch::version=0.5.3&hash=f0d7e9"
-  dependencies:
-    "@credo-ts/core": "npm:0.5.3"
-    bn.js: "npm:^5.2.1"
-    class-transformer: "npm:0.5.1"
-    class-validator: "npm:0.14.1"
-    rxjs: "npm:^7.8.0"
-    tsyringe: "npm:^4.8.0"
-  peerDependencies:
-    "@hyperledger/aries-askar-shared": ^0.2.1
-  checksum: 10c0/44c0cfcb938171252cb8483034a7711f4ace5f3467fbd248e4b953ba7a7d38eec492e637a873aba473999f00973dc0b6a6a66e641e9d46776c648ed071a9f1dc
-  languageName: node
-  linkType: hard
-
 "@credo-ts/core@npm:0.5.3":
   version: 0.5.3
   resolution: "@credo-ts/core@npm:0.5.3"
@@ -5585,14 +5569,14 @@ __metadata:
   resolution: "indy-vdr-proxy-server@workspace:."
   dependencies:
     "@credo-ts/anoncreds": "npm:0.5.3"
-    "@credo-ts/askar": "patch:@credo-ts/askar@npm%3A0.5.3#~/.yarn/patches/@credo-ts-askar-npm-0.5.3-9992a6ea11.patch"
+    "@credo-ts/askar": "npm:0.5.3"
     "@credo-ts/core": "npm:0.5.3"
     "@credo-ts/indy-vdr": "npm:0.5.3"
     "@credo-ts/node": "npm:0.5.3"
     "@hyperledger/anoncreds-nodejs": "npm:0.2.2"
     "@hyperledger/anoncreds-shared": "npm:0.2.2"
-    "@hyperledger/aries-askar-nodejs": "patch:@hyperledger/aries-askar-nodejs@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-nodejs-npm-0.2.1-83e7c2bf00.patch"
-    "@hyperledger/aries-askar-shared": "patch:@hyperledger/aries-askar-shared@npm%3A0.2.1#~/.yarn/patches/@hyperledger-aries-askar-shared-npm-0.2.1-a828004054.patch"
+    "@hyperledger/aries-askar-nodejs": "npm:0.2.1"
+    "@hyperledger/aries-askar-shared": "npm:0.2.1"
     "@hyperledger/indy-vdr-nodejs": "npm:0.2.2"
     "@hyperledger/indy-vdr-shared": "npm:0.2.2"
     "@nestjs/cli": "npm:^10.0.0"

@@ -15,7 +15,7 @@ image:
   # registry: ghcr.io
   repository: bcgov/indy-vdr-proxy-server/server
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "f7e1245"
+  tag: "4b41942"
 
 env:
   PORT: "3000"
@@ -26,10 +26,10 @@ env:
 resources:
   requests:
     memory: 0.5Gi
-    cpu: 100m
+    cpu: 300m
   limits:
     memory: 0.5Gi
-    cpu: 300m
+    cpu: 400m
 
 imagePullSecrets:
   - name: artifactory-regcred
