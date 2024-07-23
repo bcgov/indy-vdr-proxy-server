@@ -12,15 +12,13 @@ autoscaling:
 podAnnotations: {}
 podLabels: {}
 
-cacheVolumeSize: "1Gi"
-
 image:
   pullPolicy: IfNotPresent
   registry: artifacts.developer.gov.bc.ca/github-docker-remote
   # registry: ghcr.io
   repository: bcgov/indy-vdr-proxy-server/server
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "f7e1245"
+  tag: "b0ab918"
 
 env:
   PORT: "3000"
@@ -30,11 +28,11 @@ env:
 
 resources:
   requests:
-    memory: 192Mi
-    cpu: 10m
-  limits:
-    memory: 192Mi
+    memory: 1Gi
     cpu: 100m
+  limits:
+    memory: 1Gi
+    cpu: 300m
 
 imagePullSecrets:
   - name: artifactory-regcred
