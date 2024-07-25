@@ -25,11 +25,11 @@ env:
 
 resources:
   requests:
-    memory: 0.5Gi
-    cpu: 300m
+    memory: 300Mi
+    cpu: 30m
   limits:
-    memory: 0.5Gi
-    cpu: 400m
+    memory: 300Mi
+    cpu: 200m
 
 imagePullSecrets:
   - name: artifactory-regcred
