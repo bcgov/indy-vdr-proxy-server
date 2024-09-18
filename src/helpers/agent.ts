@@ -43,6 +43,7 @@ export type IndyVdrProxyAgent = Agent<ReturnType<typeof getIndyVdrProxyAgentModu
 export function setupAgent(options: {
   networks: [IndyVdrPoolConfig, ...IndyVdrPoolConfig[]]
   logger?: Logger
+  cache?: { capacity: number, expiryMs: number, path?: string }
 }) {
   return new Agent({
     config: {
@@ -56,11 +57,14 @@ export function setupAgent(options: {
       logger: options.logger ?? new ConsoleLogger(LogLevel.debug),
     },
     dependencies: agentDependencies,
-    modules: getIndyVdrProxyAgentModules(options.networks),
+    modules: getIndyVdrProxyAgentModules({ networks: options.networks, cache: options.cache }),
   })
 }
 
-const getIndyVdrProxyAgentModules = (networks: [IndyVdrPoolConfig, ...IndyVdrPoolConfig[]]) => {
+const getIndyVdrProxyAgentModules = (options: { networks: [IndyVdrPoolConfig, ...IndyVdrPoolConfig[]], cache?: { capacity: number, expiryMs: number, path?: string } }) => {
+  if (options.cache) {
+    indyVdr.setLedgerTxnCache({ capacity: options.cache.capacity, expiry_offset_ms: options.cache.expiryMs, path: options.cache.path })
+  }
   return {
     askar: new AskarModule({
       ariesAskar,
@@ -72,7 +76,7 @@ const getIndyVdrProxyAgentModules = (networks: [IndyVdrPoolConfig, ...IndyVdrPoo
     dids: new DidsModule({ resolvers: [new IndyVdrSovDidResolver()] }),
     indyVdr: new IndyVdrModule({
       indyVdr,
-      networks,
+      networks: options.networks,
     }),
   } as const
 }
