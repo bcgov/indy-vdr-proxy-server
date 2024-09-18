@@ -31,8 +31,8 @@
     "@hyperledger/anoncreds-shared": "0.2.2",
     "@hyperledger/aries-askar-nodejs": "0.2.1",
     "@hyperledger/aries-askar-shared": "0.2.1",
-    "@hyperledger/indy-vdr-nodejs": "0.2.2",
-    "@hyperledger/indy-vdr-shared": "0.2.2",
+    "@hyperledger/indy-vdr-nodejs": "patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch",
+    "@hyperledger/indy-vdr-shared": "patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch",
     "@nestjs/common": "^10.3.9",
     "@nestjs/core": "^10.3.9",
     "@nestjs/platform-express": "^10.0.0",
@@ -85,6 +85,8 @@
   "packageManager": "yarn@4.3.1",
   "resolutions": {
     "@hyperledger/aries-askar-nodejs": "0.2.1",
-    "@hyperledger/aries-askar-shared": "0.2.1"
+    "@hyperledger/aries-askar-shared": "0.2.1",
+    "@hyperledger/indy-vdr-nodejs@npm:^0.2.2": "patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch",
+    "@hyperledger/indy-vdr-shared@npm:0.2.2": "patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch"
   }
 }

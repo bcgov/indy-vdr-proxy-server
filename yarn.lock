@@ -980,7 +980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hyperledger/indy-vdr-nodejs@npm:0.2.2, @hyperledger/indy-vdr-nodejs@npm:^0.2.2":
+"@hyperledger/indy-vdr-nodejs@npm:0.2.2":
   version: 0.2.2
   resolution: "@hyperledger/indy-vdr-nodejs@npm:0.2.2"
   dependencies:
@@ -994,10 +994,31 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hyperledger/indy-vdr-nodejs@patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch":
+  version: 0.2.2
+  resolution: "@hyperledger/indy-vdr-nodejs@patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch::version=0.2.2&hash=f3ea0c"
+  dependencies:
+    "@2060.io/ffi-napi": "npm:^4.0.9"
+    "@2060.io/ref-napi": "npm:^3.0.6"
+    "@hyperledger/indy-vdr-shared": "npm:0.2.2"
+    "@mapbox/node-pre-gyp": "npm:^1.0.10"
+    ref-array-di: "npm:^1.2.2"
+    ref-struct-di: "npm:^1.1.1"
+  checksum: 10c0/b61bb9826136870dc38d62f8cd0e796c5d831d98bd693f893d0bade18c2ae13e91362cbdaf29ddf284fd2ee0405e0a79aa43fa9a1f7b378dd4f59afbd34901d6
+  languageName: node
+  linkType: hard
+
 "@hyperledger/indy-vdr-shared@npm:0.2.2":
   version: 0.2.2
   resolution: "@hyperledger/indy-vdr-shared@npm:0.2.2"
   checksum: 10c0/7e3b98966ba704939c432f7f71ed9f25c9370f2b73037553781ac1570bf17a2e044b0e53495e61940a2c9765a09d3f6de49b989ab66019f45d4c3e5fb10c5836
+  languageName: node
+  linkType: hard
+
+"@hyperledger/indy-vdr-shared@patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch":
+  version: 0.2.2
+  resolution: "@hyperledger/indy-vdr-shared@patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch::version=0.2.2&hash=4d1d6e"
+  checksum: 10c0/ae7f65d1572e4bc72bea6574ea5eb6ad00818ad5d77802c849828763c9e6dc2a49cc27b7757269fb3d53374556d2a203222b153289f31ebc337120bd0f91f5d1
   languageName: node
   linkType: hard
 
@@ -5577,8 +5598,8 @@ __metadata:
     "@hyperledger/anoncreds-shared": "npm:0.2.2"
     "@hyperledger/aries-askar-nodejs": "npm:0.2.1"
     "@hyperledger/aries-askar-shared": "npm:0.2.1"
-    "@hyperledger/indy-vdr-nodejs": "npm:0.2.2"
-    "@hyperledger/indy-vdr-shared": "npm:0.2.2"
+    "@hyperledger/indy-vdr-nodejs": "patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch"
+    "@hyperledger/indy-vdr-shared": "patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch"
     "@nestjs/cli": "npm:^10.0.0"
     "@nestjs/common": "npm:^10.3.9"
     "@nestjs/core": "npm:^10.3.9"

@@ -1,0 +1,80 @@
+diff --git a/build/NodeJSIndyVdr.d.ts b/build/NodeJSIndyVdr.d.ts
+index 75b6201a0eaaaafeb0d6ea260d912e9ff5ad3386..f63395d2b83f6a3ba7ee75d8dbac1abbbda43d27 100644
+--- a/build/NodeJSIndyVdr.d.ts
++++ b/build/NodeJSIndyVdr.d.ts
+@@ -12,6 +12,10 @@ export declare class NodeJSIndyVdr implements IndyVdr {
+     setCacheDirectory(options: {
+         path: string;
+     }): void;
++    setLedgerTxnCache(options) {
++        const { capacity, expiry_offset_ms, path } = (0, ffi_1.serializeArguments)(options);
++        this.handleError(this.nativeIndyVdr.indy_vdr_set_ledger_txn_cache(capacity, expiry_offset_ms, path));
++    }
+     setDefaultLogger(): void;
+     setProtocolVersion(options: {
+         version: number;
+diff --git a/build/NodeJSIndyVdr.js b/build/NodeJSIndyVdr.js
+index 5d96ddf79179ef2a0c7beb55a2c9972b713e6106..51f8d9911fb5cd75818774a65774e2307672278d 100644
+--- a/build/NodeJSIndyVdr.js
++++ b/build/NodeJSIndyVdr.js
+@@ -82,6 +82,10 @@ class NodeJSIndyVdr {
+         const { path } = (0, ffi_1.serializeArguments)(options);
+         this.handleError(this.nativeIndyVdr.indy_vdr_set_cache_directory(path));
+     }
++    setLedgerTxnCache(options) {
++        const { capacity, expiry_offset_ms, path } = (0, ffi_1.serializeArguments)(options);
++        this.handleError(this.nativeIndyVdr.indy_vdr_set_ledger_txn_cache(capacity, expiry_offset_ms, path));
++    }
+     setDefaultLogger() {
+         this.handleError(this.nativeIndyVdr.indy_vdr_set_default_logger());
+     }
+diff --git a/build/library/NativeBindings.d.ts b/build/library/NativeBindings.d.ts
+index 3f5169052911cc5df56b940036943ffc71bf7550..c6157c861c111212033f4fa760b3910c7314403c 100644
+--- a/build/library/NativeBindings.d.ts
++++ b/build/library/NativeBindings.d.ts
+@@ -2,6 +2,7 @@ import type { ByteBuffer } from '../ffi';
+ export interface NativeMethods {
+     indy_vdr_set_config: (arg0: string) => number;
+     indy_vdr_set_cache_directory: (arg0: string) => number;
++    indy_vdr_set_ledger_txn_cache: (arg0: number, arg1: number, arg2?: string) => number;
+     indy_vdr_set_default_logger: () => number;
+     indy_vdr_set_protocol_version: (arg0: number) => number;
+     indy_vdr_set_socks_proxy: (arg0: string) => number;
+diff --git a/build/library/bindings.d.ts b/build/library/bindings.d.ts
+index a9fcbc5017760678ca474a8b243409b9714183a3..2eeb7fff2441ea09ba26fbb7cc0f95679e134a64 100644
+--- a/build/library/bindings.d.ts
++++ b/build/library/bindings.d.ts
+@@ -5,6 +5,7 @@ export declare const nativeBindings: {
+     readonly indy_vdr_set_socks_proxy: readonly ["int64", readonly ["string"]];
+     readonly indy_vdr_version: readonly ["string", readonly []];
+     readonly indy_vdr_get_current_error: readonly ["int64", readonly [import("@2060.io/ref-napi").Type<import("@2060.io/ref-napi").Pointer<string | null>>]];
++    readonly indy_vdr_set_ledger_txn_cache: readonly ["int64", readonly ["int64", "int64", "string"]];
+     readonly indy_vdr_build_acceptance_mechanisms_request: readonly ["int64", readonly ["string", "string", "string", "string", "int64*"]];
+     readonly indy_vdr_build_attrib_request: readonly ["int64", readonly ["string", "string", "string", "string", "string", "int64*"]];
+     readonly indy_vdr_build_cred_def_request: readonly ["int64", readonly ["string", "string", "int64*"]];
+diff --git a/build/library/bindings.js b/build/library/bindings.js
+index c1684622808a1400e366a05107a92ad5f56c5708..c57292866317b0feedb6064c8de9fbf002f7fb50 100644
+--- a/build/library/bindings.js
++++ b/build/library/bindings.js
+@@ -10,6 +10,8 @@ exports.nativeBindings = {
+     indy_vdr_set_socks_proxy: [ffi_1.FFI_ERROR_CODE, [ffi_1.FFI_STRING]],
+     indy_vdr_version: [ffi_1.FFI_STRING, []],
+     indy_vdr_get_current_error: [ffi_1.FFI_ERROR_CODE, [ffi_1.FFI_STRING_PTR]],
++    // cache
++    indy_vdr_set_ledger_txn_cache: [ffi_1.FFI_ERROR_CODE, [ffi_1.FFI_INT64, ffi_1.FFI_INT64, ffi_1.FFI_STRING]],
+     // requests
+     indy_vdr_build_acceptance_mechanisms_request: [
+         ffi_1.FFI_ERROR_CODE,
+diff --git a/package.json b/package.json
+index 2f91c2128b7eb874f977f175a51472c511b3b937..3409349df5b958043711910851ec6c3a59174ff1 100644
+--- a/package.json
++++ b/package.json
+@@ -50,7 +50,7 @@
+   "binary": {
+     "module_name": "indy_vdr",
+     "module_path": "native",
+-    "remote_path": "v0.4.1",
++    "remote_path": "v0.4.3",
+     "host": "https://github.com/hyperledger/indy-vdr/releases/download/",
+     "package_name": "library-{platform}-{arch}.tar.gz"
+   },
