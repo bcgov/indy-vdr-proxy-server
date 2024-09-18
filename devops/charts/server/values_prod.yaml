@@ -1,12 +1,12 @@
 # Default values for vdr-proxy prod deployment
 namespace: c2a2c4-prod
 
-replicaCount: 3
+replicaCount: 2
 
 autoscaling:
   enabled: true
-  minReplicas: 3
-  maxReplicas: 5
+  minReplicas: 2
+  maxReplicas: 4
   targetCPUUtilizationPercentage: 80
 
 podAnnotations: {}
