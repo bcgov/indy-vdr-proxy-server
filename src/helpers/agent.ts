@@ -44,11 +44,6 @@ export function setupAgent(options: {
   networks: [IndyVdrPoolConfig, ...IndyVdrPoolConfig[]]
   logger?: Logger
 }) {
-  indyVdr.setLedgerTxnCache({
-    capacity: 1000,
-    expiry_offset_ms: 1000 * 60 * 60 * 24 * 7,
-    path: '/tmp/indy-vdr-cache',
-  })
   return new Agent({
     config: {
       label: 'Indy VDR Proxy',
