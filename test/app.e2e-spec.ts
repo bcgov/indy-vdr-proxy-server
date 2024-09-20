@@ -1,14 +1,21 @@
+import { IndyVdrPoolConfig } from '@credo-ts/indy-vdr'
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
-import { AppModule } from './../src/app.module'
+import { AppModule } from '../src/app.module'
+import { setupAgent } from '../src/helpers/agent'
+import { readFileSync } from 'fs'
+
+const configPath = process.env.INDY_VDR_PROXY_CONFIG_PATH ?? './res/app.config.json'
+const config = JSON.parse(readFileSync(configPath, { encoding: 'utf-8' }))
+const networks = config.networks as [IndyVdrPoolConfig, ...IndyVdrPoolConfig[]]
 
 describe('AppModule (e2e)', () => {
   let app: INestApplication
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule.register(setupAgent({ networks }))],
     }).compile()
 
     app = moduleFixture.createNestApplication()
