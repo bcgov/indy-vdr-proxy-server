@@ -20,13 +20,14 @@ import { ariesAskar } from '@hyperledger/aries-askar-nodejs'
 import { indyVdr } from '@hyperledger/indy-vdr-nodejs'
 import { EventEmitter } from 'events'
 import { WebSocket } from 'ws'
+import { BASE_CACHE_PATH, BASE_DATA_PATH, BASE_TEMP_PATH } from '../constants'
 
 class CustomFileSystem extends NodeFileSystem {
   public constructor() {
     super({
-      baseDataPath: `/var/credo/data`,
-      baseCachePath: `/var/credo/cache`,
-      baseTempPath: `/var/credo/tmp`,
+      baseDataPath: BASE_DATA_PATH,
+      baseCachePath: BASE_CACHE_PATH,
+      baseTempPath: BASE_TEMP_PATH,
     })
   }
 }
