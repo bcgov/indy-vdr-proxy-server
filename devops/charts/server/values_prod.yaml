@@ -1,12 +1,12 @@
 # Default values for vdr-proxy prod deployment
 namespace: c2a2c4-prod
 
-replicaCount: 3
+replicaCount: 2
 
 autoscaling:
   enabled: true
-  minReplicas: 3
-  maxReplicas: 5
+  minReplicas: 2
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
 
 podAnnotations: {}
@@ -18,7 +18,7 @@ image:
   # registry: ghcr.io
   repository: bcgov/indy-vdr-proxy-server/server
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "342bdc4"
+  tag: "b340416"
 
 env:
   PORT: "3000"
@@ -29,10 +29,10 @@ env:
 resources:
   requests:
     memory: 300Mi
-    cpu: 50m
+    cpu: 40m
   limits:
     memory: 300Mi
-    cpu: 200m
+    cpu: 120m
 
 imagePullSecrets:
   - name: artifactory-regcred
