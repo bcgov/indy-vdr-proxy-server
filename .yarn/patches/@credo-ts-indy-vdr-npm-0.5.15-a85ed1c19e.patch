@@ -1,0 +1,26 @@
+diff --git a/build/anoncreds/utils/transform.js b/build/anoncreds/utils/transform.js
+index 3c9de91bd269b61d1654335b26f5b5cc815ae03b..da9de37135ee95486fd20f015968cb9e06d3b292 100644
+--- a/build/anoncreds/utils/transform.js
++++ b/build/anoncreds/utils/transform.js
+@@ -12,7 +12,7 @@ function anonCredsRevocationStatusListFromIndyVdr(revocationRegistryDefinitionId
+     // Check whether the highest delta index is supported in the `maxCredNum` field of the
+     // revocation registry definition. This will likely also be checked on other levels as well
+     // by the ledger or the indy-vdr library itself
+-    if (Math.max(...delta.issued, ...delta.revoked) >= revocationRegistryDefinition.value.maxCredNum) {
++    if (Math.max(...delta.issued, ...delta.revoked) > revocationRegistryDefinition.value.maxCredNum) {
+         throw new core_1.CredoError(`Highest delta index '${Math.max(...delta.issued, ...delta.revoked)}' is too large for the Revocation registry maxCredNum '${revocationRegistryDefinition.value.maxCredNum}' `);
+     }
+     // 0 means unrevoked, 1 means revoked
+diff --git a/build/pool/IndyVdrPool.js b/build/pool/IndyVdrPool.js
+index 7c157d6754dcba7526100f67dbed3c86b335b0cc..56437364edcb3d16e998fb4766d7b14cae63430f 100644
+--- a/build/pool/IndyVdrPool.js
++++ b/build/pool/IndyVdrPool.js
+@@ -17,7 +17,7 @@ class IndyVdrPool {
+     }
+     connect() {
+         if (this._pool) {
+-            throw new error_1.IndyVdrError('Cannot connect to pool, already connected.');
++            return;
+         }
+         this._pool = new indy_vdr_shared_1.PoolCreate({
+             parameters: {
