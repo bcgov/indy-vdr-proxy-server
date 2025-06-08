@@ -4,9 +4,8 @@ FROM node:20-buster AS base
 # Setup env variable for yarn
 ENV YARN_VERSION=4.3.1
 
-# Update dependencies, add python to the base image, install and use yarn 4.x
+# Update dependencies, install and use yarn 4.x
 RUN apt-get update && \
-  apt-get install python3=3.7.3-1 && \
   corepack enable && \
   corepack prepare yarn@${YARN_VERSION}
 
