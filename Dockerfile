@@ -1,5 +1,5 @@
 # Setup
-FROM node:18-buster AS base
+FROM node:20-buster AS base
 
 # Setup env variable for yarn
 ENV YARN_VERSION=4.3.1
