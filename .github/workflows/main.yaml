@@ -12,19 +12,19 @@ env:
 
 jobs:
   lint:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Linting
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.7.1'
+          python-version: '3.10'
 
       - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: |
@@ -40,18 +40,18 @@ jobs:
           yarn lint:check
 
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     name: Testing
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.7.1'
+          python-version: '3.10'
 
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: Install dependencies
         run: |
@@ -73,7 +73,7 @@ jobs:
   build:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     needs: [lint, test]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     permissions:
       contents: read
       packages: write

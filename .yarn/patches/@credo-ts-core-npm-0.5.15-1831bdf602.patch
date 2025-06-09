@@ -1,0 +1,123 @@
+diff --git a/build/modules/credentials/protocol/revocation-notification/services/RevocationNotificationService.js b/build/modules/credentials/protocol/revocation-notification/services/RevocationNotificationService.js
+index 55686de9c2bc38ef66eb59862bbac8d110cb242e..ebf8278aa296d9f1dc45763d6f054b2ea6423dd9 100644
+--- a/build/modules/credentials/protocol/revocation-notification/services/RevocationNotificationService.js
++++ b/build/modules/credentials/protocol/revocation-notification/services/RevocationNotificationService.js
+@@ -48,22 +48,57 @@ let RevocationNotificationService = class RevocationNotificationService {
+                 },
+             ],
+         };
+-        this.logger.trace(`Getting record by query for revocation notification:`, query);
+-        const credentialRecord = await this.credentialRepository.getSingleByQuery(agentContext, query);
+-        credentialRecord.revocationNotification = new RevocationNotification_1.RevocationNotification(comment);
+-        await this.credentialRepository.update(agentContext, credentialRecord);
++        this.logger.trace(`Getting Credential Exchange record by query for revocation notification:`, query)
++        let credentialExchangeRecord = await this.credentialRepository.findSingleByQuery(agentContext, query)
++    
++        if (!credentialExchangeRecord) {
++          const w3cCredentialQuery = {
++            $or: [
++              {
++                anonCredsRevocationRegistryId,
++                anonCredsCredentialRevocationId,
++              },
++              {
++                anonCredsUnqualifiedRevocationRegistryId: anonCredsRevocationRegistryId,
++                anonCredsCredentialRevocationId,
++              },
++            ],
++          }
++          this.logger.trace(
++            `Credential Exchange Record not found. Getting W3C credential record by query for revocation notification:`,
++            w3cCredentialQuery
++          )
++    
++          const w3cCredentialRepository = agentContext.dependencyManager.resolve(vc_1.W3cCredentialRepository)
++          const w3cCredentialRecord = await w3cCredentialRepository.getSingleByQuery(agentContext, w3cCredentialQuery)
++    
++          // Find credential exchange record associated with this credential
++          credentialExchangeRecord =
++            (await this.credentialRepository.getAll(agentContext)).find((record) =>
++              record.credentials.find((item) => item.credentialRecordId === w3cCredentialRecord.id)
++            ) ?? null
++        }
++    
++        if (!credentialExchangeRecord) {
++          throw new CredoError_1.CredoError(
++            `No associated Credential Exchange record found for revocation id ${anonCredsCredentialRevocationId}`
++          )
++        }
++
++        credentialExchangeRecord.revocationNotification = new RevocationNotification_1.RevocationNotification(comment);
++        await this.credentialRepository.update(agentContext, credentialExchangeRecord);
+         this.logger.trace('Emitting RevocationNotificationReceivedEvent');
+         this.eventEmitter.emit(agentContext, {
+             type: CredentialEvents_1.CredentialEventTypes.RevocationNotificationReceived,
+             payload: {
+                 // Clone record to prevent mutations after emitting event.
+-                credentialRecord: credentialRecord.clone(),
++                credentialRecord: credentialExchangeRecord.clone(),
+             },
+         });
+     }
+     /**
+      * Process a received {@link V1RevocationNotificationMessage}. This will create a
+-     * {@link RevocationNotification} and store it in the corresponding {@link CredentialRecord}
++     * {@link RevocationNotification} and store it in the corresponding {@link CredentialExchangeRecord}
+      *
+      * @param messageContext message context of RevocationNotificationMessageV1
+      */
+@@ -102,7 +137,7 @@ let RevocationNotificationService = class RevocationNotificationService {
+     }
+     /**
+      * Process a received {@link V2RevocationNotificationMessage}. This will create a
+-     * {@link RevocationNotification} and store it in the corresponding {@link CredentialRecord}
++     * {@link RevocationNotification} and store it in the corresponding {@link CredentialExchangeRecord}
+      *
+      * @param messageContext message context of RevocationNotificationMessageV2
+      */
+diff --git a/build/modules/dif-presentation-exchange/DifPresentationExchangeService.js b/build/modules/dif-presentation-exchange/DifPresentationExchangeService.js
+index f1723e774dc337b8ceae11cf5765d222fd07ea24..9c5db89eec796e1df88e77104b282d22c3b8f4b4 100644
+--- a/build/modules/dif-presentation-exchange/DifPresentationExchangeService.js
++++ b/build/modules/dif-presentation-exchange/DifPresentationExchangeService.js
+@@ -177,7 +177,18 @@ let DifPresentationExchangeService = class DifPresentationExchangeService {
+             presentationSubmission.descriptor_map.push(...descriptorMap);
+         });
+         return {
+-            verifiablePresentations: verifiablePresentationResultsWithFormat.flatMap((resultWithFormat) => resultWithFormat.verifiablePresentationResult.verifiablePresentations.map((vp) => (0, utils_2.getVerifiablePresentationFromEncoded)(agentContext, vp))),
++            verifiablePresentations: verifiablePresentationResultsWithFormat.flatMap((resultWithFormat) => {
++                if (resultWithFormat.verifiablePresentationResult.verifiablePresentations) {
++                return resultWithFormat.verifiablePresentationResult.verifiablePresentations.map((vp) =>
++                    (0, utils_2.getVerifiablePresentationFromEncoded)(agentContext, vp)
++                )
++                } else {
++                return (0, utils_2.getVerifiablePresentationFromEncoded)(
++                    agentContext,
++                    resultWithFormat.verifiablePresentationResult.verifiablePresentation
++                )
++                }
++            }),
+             presentationSubmission,
+             presentationSubmissionLocation: verifiablePresentationResultsWithFormat[0].verifiablePresentationResult.presentationSubmissionLocation,
+         };
+diff --git a/build/transport/WsOutboundTransport.js b/build/transport/WsOutboundTransport.js
+index ab9df20f9fedc4def4f486b9431ac669e899e609..ed898fd92d4a18d0110a77345687f9c1eecebf7b 100644
+--- a/build/transport/WsOutboundTransport.js
++++ b/build/transport/WsOutboundTransport.js
+@@ -43,7 +43,16 @@ class WsOutboundTransport {
+         this.transportTable.forEach((socket) => {
+             socket.removeEventListener('message', this.handleMessageEvent);
+             if (socket.readyState !== this.WebSocketClass.CLOSED) {
+-                stillOpenSocketClosingPromises.push(new Promise((resolve) => socket.once('close', resolve)));
++                stillOpenSocketClosingPromises.push(
++                    new Promise((resolve) => {
++                        const closeHandler = () => {
++                            socket.removeEventListener('close', closeHandler)
++                            resolve()
++                        }
++
++                        socket.addEventListener('close', closeHandler)
++                    })
++                );                
+                 socket.close();
+             }
+         });

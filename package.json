@@ -22,22 +22,22 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@credo-ts/anoncreds": "0.5.11",
-    "@credo-ts/askar": "0.5.11",
-    "@credo-ts/core": "0.5.11",
-    "@credo-ts/indy-vdr": "0.5.11",
-    "@credo-ts/node": "0.5.11",
+    "@credo-ts/anoncreds": "0.5.15",
+    "@credo-ts/askar": "0.5.15",
+    "@credo-ts/core": "0.5.15",
+    "@credo-ts/indy-vdr": "0.5.15",
+    "@credo-ts/node": "0.5.15",
     "@hyperledger/anoncreds-nodejs": "0.2.4",
     "@hyperledger/anoncreds-shared": "0.2.4",
     "@hyperledger/aries-askar-nodejs": "0.2.3",
     "@hyperledger/aries-askar-shared": "0.2.3",
-    "@hyperledger/indy-vdr-nodejs": "patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch",
-    "@hyperledger/indy-vdr-shared": "patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch",
+    "@hyperledger/indy-vdr-nodejs": "0.2.2",
+    "@hyperledger/indy-vdr-shared": "0.2.2",
     "@nestjs/common": "^10.3.9",
     "@nestjs/core": "^10.3.9",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/throttler": "^5.2.0",
-    "credo-ts-indy-vdr-proxy-server": "0.2.0",
+    "credo-ts-indy-vdr-proxy-server": "0.2.1",
     "dotenv": "^16.4.5",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1"
@@ -84,7 +84,10 @@
   },
   "packageManager": "yarn@4.3.1",
   "resolutions": {
-    "@hyperledger/indy-vdr-nodejs@npm:^0.2.2": "patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch",
-    "@hyperledger/indy-vdr-shared@npm:0.2.2": "patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch"
+    "@hyperledger/indy-vdr-nodejs@npm:0.2.2": "patch:@hyperledger/indy-vdr-nodejs@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-nodejs-npm-0.2.2-2e02c2a0aa.patch",
+    "@hyperledger/indy-vdr-shared@npm:0.2.2": "patch:@hyperledger/indy-vdr-shared@npm%3A0.2.2#~/.yarn/patches/@hyperledger-indy-vdr-shared-npm-0.2.2-b989282fc6.patch",
+    "@credo-ts/anoncreds@npm:0.5.15": "patch:@credo-ts/anoncreds@npm%3A0.5.15#~/.yarn/patches/@credo-ts-anoncreds-npm-0.5.15-133fba94e7.patch",
+    "@credo-ts/core@npm:0.5.15": "patch:@credo-ts/core@npm%3A0.5.15#~/.yarn/patches/@credo-ts-core-npm-0.5.15-1831bdf602.patch",
+    "@credo-ts/indy-vdr@npm:0.5.15": "patch:@credo-ts/indy-vdr@npm%3A0.5.15#~/.yarn/patches/@credo-ts-indy-vdr-npm-0.5.15-a85ed1c19e.patch"
   }
 }
