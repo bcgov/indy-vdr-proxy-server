@@ -4,9 +4,8 @@ FROM node:20-buster AS base
 # Setup env variable for yarn
 ENV YARN_VERSION=4.3.1
 
-# Update dependencies, install and use yarn 4.x
-RUN apt-get update && \
-  corepack enable && \
+# Enable and pin yarn 4.x
+RUN corepack enable && \
   corepack prepare yarn@${YARN_VERSION}
 
 # Create app directory
